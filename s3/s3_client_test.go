@@ -1,19 +1,21 @@
 package s3_test
 
 import (
-	"github.com/pivotal-cf/pivnet-resource/v3/s3/s3fakes"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 
+	"github.com/pivotal-cf/pivnet-resource/v3/s3/s3fakes"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+
 	"github.com/pivotal-cf/pivnet-resource/v3/s3"
 )
 
 var _ = Describe("S3 Client", func() {
 	var (
-		client *s3.Client
+		client             *s3.Client
 		fakeFileSizeGetter *s3fakes.FakeFileSizeGetter
 	)
 
@@ -83,16 +85,6 @@ var _ = Describe("S3 Client", func() {
 				Expect(err).ShouldNot(HaveOccurred())
 			})
 
-			It("returns error", func() {
-				err := client.Upload(fileGlob, to, sourcesDir)
-				Expect(err).To(HaveOccurred())
-			})
-		})
-
-		Context("when file size is greater than 20gb", func() {
-			BeforeEach(func() {
-				fakeFileSizeGetter.FileSizeReturns(25000000000, nil)
-			})
 			It("returns error", func() {
 				err := client.Upload(fileGlob, to, sourcesDir)
 				Expect(err).To(HaveOccurred())

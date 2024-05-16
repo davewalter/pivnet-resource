@@ -1,7 +1,6 @@
 package s3
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -99,15 +98,6 @@ func (c Client) Upload(fileGlob string, to string, sourcesDir string) error {
 	}
 
 	localPath := matches[0]
-
-	fileSize, err := c.fileSizeGetter.FileSize(localPath)
-	if err != nil {
-		return err
-	}
-
-	if fileSize > 20000000000 {
-		return errors.New("file size exceeds 20 gb limit")
-	}
 
 	remotePath := filepath.Join(to, filepath.Base(localPath))
 
